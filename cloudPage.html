@@ -1982,32 +1982,60 @@ function selectFrequency(frequency) {
     }
 }
 
+// unsub all
 function unsubscribeAll() {
-    document.querySelectorAll('.button-pair button').forEach(button => {
-        button.setAttribute('aria-pressed', 'false');
-        button.textContent = button.classList.contains('subscribe') ? 'Subscribe' : 'Unsubscribe';
+    document.querySelectorAll('.button-pair').forEach(pair => {
+        const subscribeBtn = pair.querySelector('.subscribe');
+        const unsubscribeBtn = pair.querySelector('.unsubscribe');
+
+        // Set subscribe button to inactive
+        if (subscribeBtn) {
+            subscribeBtn.setAttribute('aria-pressed', 'false');
+            subscribeBtn.textContent = 'Subscribe';
+            subscribeBtn.classList.remove('active');
+        }
+
+        // Set unsubscribe button to active
+        if (unsubscribeBtn) {
+            unsubscribeBtn.setAttribute('aria-pressed', 'true');
+            unsubscribeBtn.textContent = 'Unsubscribed';
+            unsubscribeBtn.classList.add('active');
+        }
     });
 
     closeModal();
 
-    // Show floating confirmation message
     setTimeout(() => {
-        showSaveIndicator(' You have been unsubscribed from all communications.');
+        showSaveIndicator('You have been unsubscribed from all communications.', 'success');
     }, 300);
 }
 
 
 
+
+//unsub BU
 function unsubscribeFromBU() {
-    document.querySelectorAll('.button-pair button').forEach(button => {
-        button.setAttribute('aria-pressed', 'false');
-        button.textContent = button.classList.contains('subscribe') ? 'Subscribe' : 'Unsubscribe';
+    document.querySelectorAll('.button-pair').forEach(pair => {
+        const subscribeBtn = pair.querySelector('.subscribe');
+        const unsubscribeBtn = pair.querySelector('.unsubscribe');
+
+        // Set subscribe button to inactive
+        subscribeBtn.setAttribute('aria-pressed', 'false');
+        subscribeBtn.textContent = 'Subscribe';
+        subscribeBtn.classList.remove('active'); // optional
+
+        // Set unsubscribe button to active
+        unsubscribeBtn.setAttribute('aria-pressed', 'true');
+        unsubscribeBtn.textContent = 'Unsubscribed';
+        unsubscribeBtn.classList.add('active'); // assuming 'active' changes color to red
     });
+
     closeModal();
     setTimeout(() => {
         showSaveIndicator('You have been unsubscribed from all communications on BU.', 'success');
     }, 300);
 }
+
 
 
 function toggleSubscription(button) {
