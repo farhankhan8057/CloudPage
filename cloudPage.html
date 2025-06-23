@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICREON Preference Center Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+ .header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    background: transparent;
+}
+
+.logo img {
+  background-color: transparent !important;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+     white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 30px;
+    color: #667eea;
+   text-align: right;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: 18px;
+    white-space: normal;
+    text-align: right;
+  }
+}
+
+
+        /*.header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }*/
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 200% 0; }
+            50% { background-position: -200% 0; }
+        }
+
+
+
+        .logo::before {
+            font-size: 48px;
+            background: none;
+            -webkit-text-fill-color: #667eea;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+
+        .tab-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .tab-navigation {
+            display: flex;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 20px 30px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tab-btn:hover {
+            color: black;
+            background:rgb(209, 209, 209);
+        }
+
+        .tab-btn.active {
+            color: white;
+            background: #667eea;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 40px;
+            min-height: 500px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .tab-content.active {
+            background-color: white;
+            border-radius: 12px;
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Contact Details Styles */
+        .contact-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .detail-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+         /* strong inner dark blue shadow */
+
+        }
+
+      /*  .detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }*/
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .detail-row:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateX(5px);
+        }
+
+        .detail-icon {
+           font-size: 18px;
+    margin-right: 10px;
+            /*background: linear-gradient(135deg, #667eea, #764ba2);*/
+        }
+
+
+
+
+        .detail-label {
+   display: flex;
+  align-items: center;
+  gap: 1em; /* 1em space between label and icon */
+  font-weight: bold;
+  color: #333;
+        }
+
+        .detail-value {
+           color: #555;
+    font-size: 14px;
+
+
+        }
+
+        /* Subscriptions Styles */
+        .subscription-item {
+            display: flex;
+            align-items: center;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(74, 144, 226, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: rgba(74, 144, 226, 0.3);
+        }
+
+        /*.subscription-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }*/
+
+ .subscription-item:hover {
+    box-shadow: 0 0 12px rgba(0, 123, 255, 0.4); /* blue outer glow */
+    transform: translateY(-3px); /* slight lift effect */
+    border-color: rgba(0, 123, 255, 0.2); /* optional blue-tinted border */
+}
+
+        .subscription-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 25px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .newsletter-icon {
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+        }
+
+        .event-icon {
+            background: linear-gradient(135deg, #50C878, #228B22);
+        }
+
+        .subscription-details {
+            flex: 1;
+        }
+
+        .subscription-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .subscription-description {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.4;
+            display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3.2em;
+  position: relative;
+        }
+        .subscription-description.expanded {
+ -webkit-line-clamp: unset;
+  max-height: none;
+}
+.show-more-btn {
+  color: #007bff;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  display: inline-block;
+}
+
+        .subscription-controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 70px;
+            height: 35px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            transition: .4s;
+            border-radius: 35px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 27px;
+            width: 27px;
+            left: 4px;
+            bottom: 4px;
+            background: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(35px);
+        }
+
+        .subscribe-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .subscribe-btn.subscribed {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+        }
+
+        .subscribe-btn.unsubscribed {
+            background: linear-gradient(135deg, #51cf66, #40c057);
+            color: white;
+        }
+
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .action-card {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(206, 203, 203, 0.6); /* Red shadow */
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+        .action-card-all{
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .action-card-all::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        .action-card-all:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); /* Red shadow */
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+          .action-card-all:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); /* Red shadow */
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-unsub{
+            background: #b31b1b;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 28px;
+            text-align: center;
+            cursor: pointer;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            width: 15em;
+    justify-self: anchor-center;
+        }
+        .action-btn-unsub {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .action-title_unsub {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .action-description_unsub {
+            font-size: 14px;
+            color: #ebe3e3;
+            line-height: 1.4;
+        }
+        .action-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .action-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .action-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Advanced Options */
+        .advanced-options {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px solid rgba(74, 144, 226, 0.2);
+        }
+
+        .frequency-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(74, 144, 226, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .frequency-option:hover {
+            background: rgba(74, 144, 226, 0.1);
+            transform: translateX(5px);
+        }
+
+        .frequency-option input[type="radio"] {
+            margin-right: 20px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .frequency-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+        .modal-content-UnSub {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 0; /* Remove padding to style header separately */
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+        .modal-content {
+           border-radius: 12px;
+           background: #fff;
+           padding: 0;
+           margin: 40px auto;
+           width: 80%;
+           box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+           max-height: 80vh;
+           overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        }
+        .modal-content-UnSub{
+            background: white;
+            margin: 12% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10000;
+        }
+
+        .modal-header1 {
+          font-size: 24px;
+    font-weight: 600;
+    padding: 16px 12px;
+    color: #ffffff;
+    background-color: #6663bf;
+    border-top-left-radius: 13px;
+    border-top-right-radius: 10px;
+
+}
+   .modal-header {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 16px;
+  color: #ffffff;
+  background-color: #6663bf;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0; /* remove fixed margin */
+}
+
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            padding-top: 2em;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .modal-btn.confirm {
+            background: #b31b1b;
+            color: white;
+        }
+
+        .modal-btn.cancel {
+            background: #e9ecef;
+            color: #333;
+            min-width: 10em
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: red;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+         .closeAD {
+            position: absolute;
+            top: 48px;
+            right: 160px;
+            color: red;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .tab-navigation {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                padding: 15px 20px;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-details {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Button container styles */
+.subscription-item .subscription-controls {
+  width: 100%;
+  min-width: 300px;
+}
+
+@media (min-width: 1024px) {
+  .subscription-item .subscription-controls {
+    width: auto;
+    text-align: right;
+  }
+}
+
+/* Button pair styling */
+.subscription-item .button-pair {
+  text-align: right;
+  display: inline-block;
+  margin-top: 1em;
+  border-radius: 100em;
+  min-width: 14em;
+  background: #dddddd;
+  transition: background-color 0.1s;
+}
+
+@media (min-width: 1024px) {
+  .subscription-item .button-pair {
+    margin-top: 0;
+    margin-left: 20em;
+  }
+}
+
+.subscription-item .button-pair.hovering {
+  background: #d0d0d0;
+}
+
+/* Button basic styles */
+.subscription-item button {
+  position: relative;
+  border-radius: 100em;
+  min-width: 8em;
+  margin-right: -2px;
+  padding: 0.6rem 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.subscription-item button + button {
+  margin-right: 0;
+}
+
+/* Active subscribe */
+.subscription-item .subscribe[aria-pressed="true"] {
+  background-color: #6663bf;
+  color: white;
+}
+
+/* Active unsubscribe */
+.subscription-item .unsubscribe[aria-pressed="true"] {
+  background-color: #b31b1b;
+  color: white;
+}
+
+/* Inactive state for both */
+.subscription-item .subscribe[aria-pressed="false"],
+.subscription-item .unsubscribe[aria-pressed="false"] {
+  background-color: #dddddd;
+  color: #333;
+}
+
+/* Hover + focus states for inactive */
+.subscription-item .subscribe[aria-pressed="false"]:hover,
+.subscription-item .subscribe[aria-pressed="false"]:focus,
+.subscription-item .unsubscribe[aria-pressed="false"]:hover,
+.subscription-item .unsubscribe[aria-pressed="false"]:focus {
+  background-color: #d0d0d0;
+}
+
+.subscription-item .subscribe[aria-pressed="false"]:active,
+.subscription-item .unsubscribe[aria-pressed="false"]:active {
+  color: #333;
+  background-color: #c4c4c4;
+}
+
+.subscription-item button:focus {
+  z-index: 1;
+  outline: none;
+}
+
+.subscription-category {
+  padding: 0 0 0 15px;
+  border-left:  0 }
+  @media (min-width: 1024px) {
+    .subscription-category {
+      padding-left: 1px; } }
+  .subscription-category p {
+    margin-bottom: 0.25em; }
+details {
+  position: relative;
+  overflow: hidden;
+  padding: 15px 15px 20px 38px;
+  margin: 0 -15px 2px;
+  font-size: 16px;
+  transition: background-color 0.15s; }
+  @media (min-width: 360px) {
+    details {
+      padding: 15px 15px 20px 43px; } }
+  @media (min-width: 768px) {
+    details {
+      padding: 15px 30px 20px 47px; } }
+  @media (min-width: 1024px) {
+    details {
+      padding: 20px 30px 25px 52px;
+      margin: 0 -20px 2px; } }
+  details > :last-child {
+    margin-bottom: 0; }
+  details summary {
+    font-size: 18px; }
+    @media (min-width: 1024px) {
+      details summary {
+        font-size: 20px; } }
+  details h4 {
+    font-size: 16px; }
+  details:not([open]) summary {
+    margin-bottom: 0; }
+  details.subscribed:before {
+    position: absolute;
+    top: 17px;
+    left: 14px; }
+    @media (min-width: 1024px) {
+      details.subscribed:before {
+        top: 24px;
+        left: 19px; } }
+.subscription-list {
+  list-style: none;
+  padding: 0;
+  margin: 2em 0; }
+  .subscription-list li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 0 1.5em; }
+    @media (min-width: 1024px) {
+      .subscription-list li {
+        margin-bottom: 1.75em; } }
+    .subscription-list li:last-child {
+      margin-bottom: 0; }
+    .subscription-list li .description {
+      width: 100%; }
+      @media (min-width: 1024px) {
+        .subscription-list li .description {
+          width: calc(100% - 330px); } }
+    .subscription-list li .buttons {
+      width: 100%;
+      min-width: 300px; }
+      @media (min-width: 1024px) {
+        .subscription-list li .buttons {
+          width: auto;
+          text-align: right; } }
+    .subscription-list li .button-pair {
+      text-align: right;
+      display: inline-block;
+      margin-top: 1em;
+      border-radius: 100em;
+      min-width: 14em;
+      background: #dddddd;
+      transition: background-color 0.1s; }
+      @media (min-width: 1024px) {
+        .subscription-list li .button-pair {
+          margin-top: 0; } }
+      .subscription-list li .button-pair.required-mailing {
+        background: #ededed !important; }
+        .subscription-list li .button-pair.required-mailing:before {
+          content: '\f190';
+          font-size: 18px;
+          color: #999;
+          min-width: calc(50% - 4px);
+          text-align: center;
+          position: relative;
+          top: 2px;
+          left: 3px; }
+      .subscription-list li .button-pair.hovering {
+        background: #d0d0d0; }
+    .subscription-list li h4 {
+      margin: 0; }
+    .subscription-list li p {
+      margin: 0; }
+    .subscription-list li button {
+      position: relative;
+      border-radius: 100em;
+      min-width: 8em;
+      margin-right: -2px;
+      transition: background-color 0.1s; }
+      .subscription-list li button + button {
+        margin-right: 0; }
+   /*   .subscription-list li button[aria-selected='true'], .subscription-list li button[aria-pressed='true'] {
+        cursor: auto;
+        background: #006699 !important;
+        transition: none; } */
+        .subscription-list li button[aria-selected='true'].subscribe:before, .subscription-list li button[aria-pressed='true'].subscribe:before {
+          /* content: '\f26b'; */
+          margin: 0 0.35em 0 -0.35em; }
+      .subscription-list li button[aria-selected='false'], .subscription-list li button[aria-pressed='false'] {
+        background: #dddddd;
+        color: #000; }
+        .subscription-list li button[aria-selected='false']:hover, .subscription-list li button[aria-selected='false']:focus, .subscription-list li button[aria-pressed='false']:hover, .subscription-list li button[aria-pressed='false']:focus {
+          background: #d0d0d0; }
+        .subscription-list li button[aria-selected='false']:active, .subscription-list li button[aria-pressed='false']:active {
+          color: #333;
+          background: #c4c4c4; }
+      .subscription-list li button:focus {
+        z-index: 1; }
+
+/* Default button styles */
+        .subscribe,
+        .unsubscribe {
+           background-color: #dddddd;
+           color: white;
+           border: none;
+           padding: 0.6rem 1rem;
+           border-radius: 100em;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+        }
+
+       /* Active Subscribe */
+        .subscribe[aria-pressed="true"] {
+           background-color: #6663bf;
+        }
+
+      /* Active Unsubscribe */
+        .unsubscribe[aria-pressed="true"] {
+          background-color: #b31b1b;
+        }
+
+       /* Inactive buttons - ensure consistency */
+        .subscribe[aria-pressed="false"],
+        .unsubscribe[aria-pressed="false"] {
+           background-color: #dddddd;
+           color: #333;
+        }
+      /* taskbar-style tab */
+        .ui-modal {
+           border: none;
+           border-radius: 8px;
+           max-width: 600px;
+           width: 90%;
+           padding: 0;
+           overflow: hidden;
+        }
+
+        .dialog-toolbar {
+            background-color: #6663bf;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin: 0;
+        }
+         .dialog-toolbar h2 {
+           margin: 0;
+           font-size: 1.25rem;
+        }
+
+#subscriptions-modal .modal-body {
+     overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 80vh;
+  padding: 0 0.5rem 1rem 0.5rem;
+  box-sizing: border-box;
+  background: #fff;
+}
+.modal-body {
+  padding: 20px;
+  color: #333;
+  background-color: #fff;
+}
+
+.detail-value {
+  transition: all 0.3s ease;
+  min-width: 120px;
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: transparent;
+  color: #6e6eed;
+}
+
+/* Expanded styling when editable */
+.detail-value.editing {
+  background: #f0f8ff;
+  padding: 8px 12px;
+  min-width: 220px;
+  font-size: 1.05rem;
+  box-shadow: 0 0 4px rgba(102, 126, 234, 0.3);}
+
+.detail-info {
+display: flex;
+    flex-direction: column;
+    flex: 1;
+    position: relative;
+
+}
+
+.edit-icon {
+   font-size: 16px;
+  color: #888;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.edit-icon:hover {
+    color: #6e6eed;
+}
+
+.edit-input {
+  font-size: 14px;
+  padding: 5px 8px;
+  padding-right: 28px; /* space for icon */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  width: 100%;          /* ✅ Let it adapt to the container */
+  max-width: 400px;     /* ✅ Prevent it from growing too wide */
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: #667eea;
+    background-color: #fff;
+}
+
+
+
+/* *******************************************************************testing  */
+
+
+ @media (min-width: 768px) {
+      .detail-card,
+      .action-card,
+      .subscription-item {
+        flex: 1 1 45%;
+      }
+
+      .subscription-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .subscription-controls {
+        flex-direction: row;
+        gap: 10px;
+      }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content-UnSub {
+      background: #fff;
+      padding: 0;
+      max-width: 60%;
+      border-radius: 10px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 15px;
+    }
+
+    @media (min-width: 500px) {
+      .modal-buttons {
+        flex-direction: row;
+        justify-content: flex-end;
+      }
+    }
+
+    .subscribe-btn,
+    .modal-btn {
+      padding: 10px 20px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .subscribe-btn.subscribed { background: red; color: white; }
+    .subscribe-btn.unsubscribed { background: green; color: white; }
+    .modal-btn.confirm { background: #b31b1b; color: white; }
+    .modal-btn.cancel { background: #ddd; color: black; }
+
+
+.frequency-content {
+  background: #fff;
+/* padding: 30px;*/
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-header-modern {
+  background-color: #665ecb;
+  color: white;
+  padding: 16px 20px;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.close-icon {
+  font-size: 20px;
+  font-weight: bold;
+  color: red;
+  cursor: pointer;
+}
+
+.modal-body-modern {
+   padding: 24px;
+  background-color: #f9f9ff;
+  max-height: 280px; /* Adjust this value if needed to fit 4 options nicely */
+  overflow-y: auto;
+}
+
+.modal-footer-modern {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+background-color: #fbfafa;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.frequency-option {
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: background 0.3s ease;
+}
+
+.frequency-option:hover {
+  background: #ebf0ff;
+}
+
+.modal-content.frequency-content {
+  width: 90%;
+  max-width: 520px;
+  margin: 60px auto;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.modal-btn {
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-btn.cancel {
+  background: #eee;
+  color: #333;
+}
+
+.modal-btn.confirm {
+  background: #b31b1b;
+  color: white;
+}
+
+/* Global fix for horizontal scroll */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Ensure images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Improve modal responsiveness */
+.modal-content, .modal-content-UnSub {
+  width: 95% !important;
+  max-width: 700px !important;
+}
+
+/* Fix tab and flex containers on small screens */
+@media (max-width: 7px) {
+  .header, .tab-navigation, .contact-details, .quick-actions {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+  .tab-btn {
+    flex: 1 1 100% !important;
+  }
+}
+
+@media (max-width: 300px) {
+  .subscription-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .subscription-list li .description,
+  .subscription-list li .buttons {
+    width: 100% !important;
+    text-align: left;
+  }
+
+  .subscription-list li .button-pair {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .subscription-list li .button-pair button {
+    flex: 1 1 45%;
+    min-width: 120px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .subscription-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .subscription-controls {
+    width: 100% !important;
+    margin-top: 10px;
+  }
+
+  .subscription-controls .button-pair {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 83%;
+    justify-content: space-between;
+  }
+
+  .subscription-controls .button-pair button {
+    flex: 1 1 48%;
+    min-width: 120px;
+  }
+}
+
+</style>
+
+</head>
+<body>
+
+
+    <div class="container">
+            <div class="header">
+                <div class="logo"><a href="https://www.icreon.com/"><img src="C:\Users\MohdFarhan\Downloads/icreonlogo.png" alt="UMass" width="200" height="37"></a></div>
+                <div class="title">Preference Center Management</div>
+            </div>
+
+        <div class="tab-container">
+            <div class="tab-navigation">
+    <button class="tab-btn active" data-tab="contact-details" onclick="showTab('contact-details')">
+        Contact Details
+    </button>
+    <button class="tab-btn" data-tab="subscriptions" onclick="showTab('subscriptions')">
+        Subscriptions
+    </button>
+    <button class="tab-btn" data-tab="quick-actions" onclick="showTab('quick-actions')">
+        Quick Actions
+    </button>
+</div>
+
+
+
+            <div id="contact-details" class="tab-content active">
+                <div class="contact-details">
+                    <div class="detail-card">
+                        <h3 style="margin-bottom: 25px; color: #333; font-size: 24px;">Personal Information</h3>
+                        <div class="detail-row">
+                            <div class="detail-icon">👤</div>
+                            <div class="detail-info">
+                                <div class="detail-label">First Name
+                                <span class="edit-icon" data-target="firstName" style="cursor: pointer; ">&#9998;</span>
+                                </div>
+                                <div class="detail-value">John</div>
+
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-icon">👤</div>
+                            <div class="detail-info">
+                                <div class="detail-label">Last Name
+                               <span class="edit-icon" data-target="lastName" style="cursor: pointer;">&#9998;</span>
+                                </div>
+                                <div class="detail-value">Doe</div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <h3 style="margin-bottom: 25px; color: #333; font-size: 24px;">Contact Information</h3>
+                        <div class="detail-row">
+                            <div class="detail-icon">📧</div>
+                            <div class="detail-info">
+                                <div class="detail-label">Email Address
+                                    <span class="edit-icon" data-target="email" style="cursor: pointer;">&#9998;</span>
+                                </div>
+                                <div class="detail-value">john.doe@email.com</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-icon">📱</div>
+                            <div class="detail-info">
+                                <div class="detail-label">Phone Number
+                              <span class="edit-icon" data-target="phone" style="cursor: pointer;">&#9998;</span>
+                                </div>
+                                <div class="detail-value">+1 (555) 123-4567</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(102, 126, 234, 0.1); border-radius: 15px; border-left: 4px solid #667eea;">
+                    <h4 style="color: #333; margin-bottom: 15px;">About Preference Management</h4>
+                    <p style="color: #666; line-height: 1.6;">
+                        Customize the frequency and types of emails you receive by managing your subscription preferences.
+                        Your preferences are saved automatically and take effect immediately. You can update them anytime by visiting this preference center.
+                    </p>
+                </div>
+            </div>
+
+            <div id="subscriptions" class="tab-content">
+    <div class="subscription-item" data-category="newsletter">
+        <div class="subscription-details">
+            <div class="subscription-name">Newsletter</div>
+            <div class="subscription-description">
+                Stay updated with our latest news, insights, and industry trends delivered to your inbox .
+                Stay updated with our latest news, insights, and industry trends delivered to your inbox .
+            </div>
+        </div>
+        <div class="subscription-controls">
+            <div class="button-pair">
+                <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                <button aria-pressed="false" class="subscribe">Subscribe</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="subscription-item" data-category="events">
+        <div class="subscription-details">
+            <div class="subscription-name">Event 1</div>
+            <div class="subscription-description">
+                Get notified about upcoming webinars, workshops, and networking events.
+            </div>
+        </div>
+        <div class="subscription-controls">
+            <div class="button-pair">
+                <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                <button aria-pressed="false" class="subscribe">Subscribe</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="subscription-item" data-category="events">
+        <div class="subscription-details">
+            <div class="subscription-name">Event 2</div>
+            <div class="subscription-description">
+                Receive updates about special events, product launches, and exclusive offers.
+            </div>
+        </div>
+
+
+        <div class="subscription-controls">
+            <div class="button-pair">
+                <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                <button aria-pressed="false" class="subscribe">Subscribe</button>
+            </div>
+        </div>
+    </div>
+
+        <div class="subscription-item" data-category="events">
+        <div class="subscription-details">
+            <div class="subscription-name">Event 3</div>
+            <div class="subscription-description">
+                Receive updates about special events, product launches, and exclusive offers.
+            </div>
+        </div>
+
+
+        <div class="subscription-controls">
+            <div class="button-pair">
+                <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                <button aria-pressed="false" class="subscribe">Subscribe</button>
+            </div>
+        </div>
+    </div>
+
+        <div class="subscription-item" data-category="events">
+        <div class="subscription-details">
+            <div class="subscription-name">Event 4</div>
+            <div class="subscription-description">
+                Receive updates about special events, product launches, and exclusive offers.
+            </div>
+        </div>
+
+
+        <div class="subscription-controls">
+            <div class="button-pair">
+                <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                <button aria-pressed="false" class="subscribe">Subscribe</button>
+            </div>
+        </div>
+    </div>
+    <!-- Unsubscribe BU -->
+                        <div class="btn-unsub" onclick="showUnsubscribeAllModalBU()">
+                            <span class="action-btn-unsub"></span>
+                            <div class="action-title_unsub">Unsubscribe From This <span id="bu-name"></span></div>
+                            <!-- <div class="action-description_unsub">Remove yourself from all email communications BU</div> -->
+                        </div>
+</div>
+
+                <!--Advanced Settings Model-->
+                    <!-- Modern Frequency Modal -->
+                                            <div id="frequencyModal" class="modal" style="display: none;">
+                                            <div class="modal-content frequency-content">
+
+                                                <!-- Modal Header -->
+                                                <div class="modal-header-modern">
+                                                <span>Choose Frequency Preference</span>
+                                                <span class="close-icon" onclick="closeFrequencyModalAD()">&times;</span>
+                                                </div>
+
+                                                <!-- Modal Body with Options -->
+                                                <div class="modal-body-modern">
+                                                <div class="frequency-option">
+                                                    <input type="checkbox" name="frequency" value="delete" id="delete">
+                                                    <label for="delete"><span id="delete-my-data"></label>
+                                                </div>
+                                                <div class="frequency-option">
+                                                    <input type="checkbox" name="frequency" value="profile" id="profile">
+                                                    <label for="profile"><span id="do-not-profile"></label>
+                                                </div>
+                                                <div class="frequency-option">
+                                                    <input type="checkbox" name="frequency" value="market" id="market">
+                                                    <label for="market"><span id="do-not-markeet"></label>
+                                                </div>
+                                                <div class="frequency-option">
+                                                    <input type="checkbox" name="frequency" value="track" id="track">
+                                                    <label for="track"><span id="do-not-track"></label>
+                                                </div>
+                                                <div class="frequency-option">
+                                                    <input type="checkbox" name="frequency" value="process" id="process">
+                                                    <label for="process"><span id="do-not-process"></label>
+                                                </div>
+                                                </div>
+
+                                                <!-- Modal Footer Buttons -->
+                                                <div class="modal-footer-modern">
+                                                <button class="modal-btn cancel" onclick="closeFrequencyModalAD()">Cancel</button>
+                                                <button class="modal-btn confirm" onclick="saveFrequencySettings()">Save Changes</button>
+                                                </div>
+                                            </div>
+                                            </div>
+
+
+
+
+
+                                <!--Show All Subscription Model-->
+                                <div id="subscriptions-modal" class="modal">
+                                        <div class="modal-content">
+                                            <div class="dialog-toolbar">
+                                              <h2>All Subscriptions</h2>
+                                        <span class="close" onclick="closeFrequencyModalAllSub()" style="cursor:pointer; float:right; font-size: 1.5rem;">&times;</span>
+                                            </div>
+                                        <div class="modal-body">
+                                             <p>Select which mailings you would like to subscribe to and save your preferences.</p>
+                                             <!-- <form aria-label="Sort Categories" class="subscription-sort">
+                                                <label for="sort-by" class="sr-only">Sort By</label>
+                                                <select id="sort-by" name="sort-by">
+                                                    <option value="az">A - Z</option>
+                                                    <option value="za">Z - A</option>
+                                                    <option value="sub">My Subscriptions</option>
+                                                </select>
+                                            </form> -->
+                                            <div class="accordion-set"> <!-- New container around <details> tags to enable "Expand all" functionality. -->
+                                            <details class="subscribed">
+                                                <summary>Academic Affairs<span class="sr-only"> (You have active subscriptions in this category.)</span></summary>
+                                                <div class="subscription-category">
+
+                                                   <ul class="subscription-list">
+                                                       <li>
+                                                            <div class="description">
+                                                                <h4>Birthday</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="false" class="unsubscribe">Unsubscribe</button>
+                                                                    <button aria-pressed="true" class="subscribe">Subscribed</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+
+                                                            <div class="description">
+                                                                <h4>Class Membership</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                    <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Connect with Cornell weekly</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                    <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Connect with Cornell weekly-1</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                    <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Connect with Cornell weekly-2</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                    <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </details>
+                                            <details class="subscribed">
+                                                <summary>Campus Administrators<span class="sr-only"> (You have active subscriptions in this category.)</span></summary>
+                                                <div class="subscription-category">
+
+                                                    <ul class="subscription-list">
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Birthday</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="false" class="unsubscribe">Unsubscribe</button>
+                                                                    <button aria-pressed="true" class="subscribe">Subscribed</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Class Membership</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                    <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Connect with Cornell weekly</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                               <div class="button-pair">
+                                                                   <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                   <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </details>
+                                            <details class="subscribed">
+                                                <summary>Isenberg School of Management<span class="sr-only"> (You have active subscriptions in this category.)</span></summary>
+                                                <div class="subscription-category">
+
+                                                    <ul class="subscription-list">
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Birthday</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="false" class="unsubscribe">Unsubscribe</button>
+                                                                    <button aria-pressed="true" class="subscribe">Subscribed</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Class Membership</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                   <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                   <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                               <h4>Connect with Cornell weekly</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                    <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </details>
+                                             <details class="subscribed">
+                                                <summary>Isenberg School of Management1<span class="sr-only"> (You have active subscriptions in this category.)</span></summary>
+                                                <div class="subscription-category">
+
+                                                    <ul class="subscription-list">
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Birthday</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="false" class="unsubscribe">Unsubscribe</button>
+                                                                    <button aria-pressed="true" class="subscribe">Subscribed</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Class Membership</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                   <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                   <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                               <h4>Connect with Cornell weekly</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                    <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </details>
+                                             <details class="subscribed">
+                                                <summary>Isenberg School of Management 2<span class="sr-only"> (You have active subscriptions in this category.)</span></summary>
+                                                <div class="subscription-category">
+
+                                                    <ul class="subscription-list">
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Birthday</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="false" class="unsubscribe">Unsubscribe</button>
+                                                                    <button aria-pressed="true" class="subscribe">Subscribed</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                                <h4>Class Membership</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                   <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                   <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="description">
+                                                               <h4>Connect with Cornell weekly</h4>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                <div class="button-pair">
+                                                                    <button aria-pressed="true" class="unsubscribe">Unsubscribed</button>
+                                                                    <button aria-pressed="false" class="subscribe">Subscribe</button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </details>
+                                            </div>
+                                        </div>
+                                        </div>
+                                </div>
+
+            <div id="quick-actions" class="tab-content">
+                <div class="quick-actions">
+                    <div class="action-card" onclick="showAllSubscriptions()">
+                        <span class="action-icon">📋</span>
+                        <div class="action-title">Show All Subscriptions</div>
+                        <div class="action-description">View and manage all your current email subscriptions in one place</div>
+                    </div>
+
+                    <div class="action-card" onclick="openAdvancedSettings()">
+                        <span class="action-icon">⚙️</span>
+                        <div class="action-title">Advanced Settings</div>
+                        <div class="action-description">Configure detailed preferences and notification settings</div>
+                    </div>
+
+                      <!-- Unsubscribe All -->
+                        <div class="action-card-all" onclick="showUnsubscribeAllModal()">
+                            <span class="action-icon">
+                                <svg width="42" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" >
+      <!-- Bigger envelope group -->
+      <g transform="scale(1.4) translate(-3,-3)">
+        <rect x="2" y="5" width="20" height="14" rx="2" ry="2" stroke="#000" fill="none"/>
+        <polyline points="2,7 12,13 22,7" stroke="#000" fill="none"/>
+      </g>
+      <!-- Red cross stays normal size -->
+      <line x1="6" y1="9" x2="18" y2="19" stroke="red" stroke-width="3" />
+      <line x1="18" y1="9" x2="6" y2="19" stroke="red" stroke-width="3" />
+    </svg>
+                            </span>
+                            <div class="action-title">Unsubscribe All</div>
+                            <div class="action-description">Remove yourself from all email communications</div>
+                        </div>
+
+            </div>
+
+                <div style="background: rgba(255, 193, 7, 0.1); border-radius: 15px; padding: 25px; border-left: 4px solid #ffc107; margin-top: 30px;">
+                    <h4 style="color: #333; margin-bottom: 15px;">⚠️ Important Notice</h4>
+                    <p style="color: #666; line-height: 1.6;">
+                        These quick actions will affect all your subscription preferences. Please use them carefully.
+                        You can always re-subscribe to individual lists from the Subscriptions tab.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Unsubscribe All -->
+    <!-- Unsubscribe All Modal -->
+<div id="unsubscribeModal" class="modal">
+    <div class="modal-content-UnSub">
+      <span class="close" onclick="closeFrequencyModal()">&times;</span>
+      <div class="modal-header">Unsubscribe from All Communications</div>
+      <div class="modal-body">
+        Are you sure you want to unsubscribe from <strong>all</strong> email communications?
+        This action will remove you from all mailing lists and you won't receive any future emails from us.
+        <br><br>
+        <strong>This action cannot be undone automatically.</strong>
+      </div>
+      <div class="modal-buttons" id="top-message">
+        <button class="modal-btn cancel" onclick="closeFrequencyModal()">Cancel</button>
+        <button class="modal-btn confirm"  id="unsubscribe-message" onclick="unsubscribeAll()">Unsubscribe All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unsubscribe BU Modal -->
+  <div id="unsubscribeModalBU" class="modal">
+    <div class="modal-content-UnSub">
+      <span class="close" onclick="closeFrequencyModalBU()">&times;</span>
+      <div class="modal-header">Unsubscribe from This Business Unit</div>
+      <div class="modal-body">
+        Are you sure you want to unsubscribe from email communications related to this business unit?
+        You will stop receiving emails specific to this BU, but you may still receive communications from other parts of our organization.
+        <br><br>
+        <strong>This action cannot be undone automatically.</strong>
+      </div>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" onclick="closeFrequencyModalBU()">Cancel</button>
+        <button class="modal-btn confirm" onclick="unsubscribeFromBU()">Unsubscribe</button>
+      </div>
+    </div>
+  </div>
+
+    <script>
+// Tab functionality
+function showTab(tabName) {
+    const tabContents = document.querySelectorAll('.tab-content');
+    const tabButtons = document.querySelectorAll('.tab-btn');
+
+    // Hide all content and remove active button
+    tabContents.forEach(content => content.classList.remove('active'));
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+
+    // Show selected tab content
+    const activeTab = document.getElementById(tabName);
+    if (activeTab) activeTab.classList.add('active');
+
+    // Activate the correct tab button
+    tabButtons.forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabName) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+
+
+// Modal Controls
+function showUnsubscribeAllModal() {
+      const modal = document.getElementById('unsubscribeModal');
+      if (modal) modal.style.display = 'block';
+    }
+
+    function showUnsubscribeAllModalBU() {
+      const modal = document.getElementById('unsubscribeModalBU');
+      if (modal) modal.style.display = 'block';
+    }
+
+    function closeFrequencyModal() {
+      const modal = document.getElementById('unsubscribeModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function closeFrequencyModalBU() {
+      const modal = document.getElementById('unsubscribeModalBU');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function unsubscribeAll() {
+      message('You have unsubscribed from all communications.');
+      closeFrequencyModal();
+    }
+
+    function unsubscribeFromBU() {
+      alert('You have unsubscribed from this business unit.');
+      closeFrequencyModalBU();
+    }
+
+
+function closeFrequencyModalAD() {
+    const modal = document.getElementById("frequencyModal");
+    if (modal) modal.style.display = "none";
+}
+
+function closeSubscriptionsModal() {
+    const modal = document.getElementById('subscriptions-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function closeFrequencyModalAllSub() {
+    closeSubscriptionsModal();
+}
+
+
+
+function closeModal() {
+    const modal = document.getElementById('unsubscribeModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function showAllSubscriptions() {
+    const modal = document.getElementById('subscriptions-modal');
+    if (modal) modal.style.display = 'block';
+
+    showTab('subscriptions');
+    setTimeout(() => {
+        document.querySelectorAll('.subscription-item').forEach((item, index) => {
+            setTimeout(() => {
+                item.style.transform = 'scale(1.02)';
+                setTimeout(() => item.style.transform = 'scale(1)', 200);
+            }, index * 100);
+        });
+    }, 300);
+}
+
+/*function openAdvancedSettings() {
+    showTab('subscriptions');
+    const frequencyModal = document.getElementById('frequencyModal');
+    if (frequencyModal) frequencyModal.style.display = 'block';
+}*/
+
+function selectFrequency(frequency) {
+    const input = document.getElementById(frequency);
+    if (input) {
+        input.checked = true;
+        console.log('Frequency preference changed to:', frequency);
+        const option = input.closest('.frequency-option');
+        if (option) {
+            option.style.background = 'rgba(102, 126, 234, 0.2)';
+            setTimeout(() => {
+                option.style.background = 'rgba(74, 144, 226, 0.05)';
+            }, 1000);
+        }
+    }
+}
+
+function unsubscribeAll() {
+    document.querySelectorAll('.button-pair button').forEach(button => {
+        button.setAttribute('aria-pressed', 'false');
+        button.textContent = button.classList.contains('subscribe') ? 'Subscribe' : 'Unsubscribe';
+    });
+
+    closeModal();
+
+    // Show floating confirmation message
+    setTimeout(() => {
+        showSaveIndicator(' You have been unsubscribed from all communications.');
+    }, 300);
+}
+
+
+
+function unsubscribeFromBU() {
+    document.querySelectorAll('.button-pair button').forEach(button => {
+        button.setAttribute('aria-pressed', 'false');
+        button.textContent = button.classList.contains('subscribe') ? 'Subscribe' : 'Unsubscribe';
+    });
+    closeModal();
+    setTimeout(() => {
+        showSaveIndicator('You have been unsubscribed from all communications on BU.', 'success');
+    }, 300);
+}
+
+
+function toggleSubscription(button) {
+    const pair = button.closest('.button-pair');
+    const subscribeBtn = pair.querySelector('.subscribe');
+    const unsubscribeBtn = pair.querySelector('.unsubscribe');
+
+    if (button.classList.contains('subscribe')) {
+        subscribeBtn.setAttribute('aria-pressed', 'true');
+        subscribeBtn.textContent = 'Subscribed';
+        unsubscribeBtn.setAttribute('aria-pressed', 'false');
+        unsubscribeBtn.textContent = 'Unsubscribe';
+    } else {
+        unsubscribeBtn.setAttribute('aria-pressed', 'true');
+        unsubscribeBtn.textContent = 'Unsubscribed';
+        subscribeBtn.setAttribute('aria-pressed', 'false');
+        subscribeBtn.textContent = 'Subscribe';
+    }
+
+    showSaveIndicator();
+}
+
+// Event listeners
+window.onclick = function (event) {
+    const unsubscribeModal = document.getElementById('unsubscribeModal');
+    const subscriptionsModal = document.getElementById('subscriptions-modal');
+    if (event.target === unsubscribeModal) closeModal();
+    if (event.target === subscriptionsModal) closeSubscriptionsModal();
+};
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeModal();
+        closeSubscriptionsModal();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.tab-btn').forEach((btn, index) => {
+        setTimeout(() => {
+            btn.style.transform = 'translateY(0)';
+            btn.style.opacity = '1';
+        }, index * 100);
+    });
+
+    document.querySelectorAll('.action-card').forEach(card => {
+        card.addEventListener('mouseenter', function () {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        card.addEventListener('mouseleave', function () {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    document.querySelectorAll('.button-pair button').forEach(button => {
+        button.addEventListener('click', function () {
+            toggleSubscription(this);
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => this.style.transform = 'scale(1)', 150);
+        });
+
+        button.addEventListener('mouseenter', () => {
+            if (button.getAttribute('aria-pressed') === 'false') {
+                button.parentElement.classList.add('hovering');
+            }
+        });
+        button.addEventListener('mouseleave', () => {
+            button.parentElement.classList.remove('hovering');
+        });
+    });
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            this.style.opacity = '0.7';
+            setTimeout(() => this.style.opacity = '1', 200);
+        });
+    });
+});
+
+function showSaveIndicator(message = '✅ Preferences Saved') {
+    const indicator = document.createElement('div');
+    indicator.style.cssText = `
+    position: fixed;
+    bottom: 20px; /* ✅ Moved from top to bottom */
+    right: 20px;
+    background: linear-gradient(135deg,rgb(246, 255, 217),rgb(208, 208, 208));
+    color: black;
+    padding: 15px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    z-index: 1001;
+    animation: slideInRight 0.3s ease-out;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    `;
+    indicator.innerHTML = message;
+    document.body.appendChild(indicator);
+    setTimeout(() => {
+        indicator.style.animation = 'slideOutRight 0.3s ease-in';
+        setTimeout(() => document.body.removeChild(indicator), 300);
+    }, 4000);
+}
+
+const style = document.createElement('style');
+style.textContent = `
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+.tab-btn {
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}`;
+document.head.appendChild(style);
+
+// Keyboard nav for tab buttons
+document.addEventListener('keydown', function (event) {
+    const focusedElement = document.activeElement;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        const tabButtons = Array.from(document.querySelectorAll('.tab-btn'));
+        const currentIndex = tabButtons.indexOf(focusedElement);
+        if (currentIndex !== -1) {
+            event.preventDefault();
+            let nextIndex = event.key === 'ArrowLeft'
+                ? (currentIndex > 0 ? currentIndex - 1 : tabButtons.length - 1)
+                : (currentIndex < tabButtons.length - 1 ? currentIndex + 1 : 0);
+            tabButtons[nextIndex].focus();
+            tabButtons[nextIndex].click();
+        }
+    }
+});
+
+//contact page data type and empty validaition
+document.addEventListener("DOMContentLoaded", function () {
+    let currentEdit = null;
+
+    const validationRules = {
+        firstName: {
+            validate: value => /^[a-zA-Z\s]+$/.test(value),
+            message: "First Name must contain only letters and not be empty."
+        },
+        lastName: {
+            validate: value => /^[a-zA-Z\s]+$/.test(value),
+            message: "Last Name must contain only letters and not be empty."
+        },
+        email: {
+            validate: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+            message: "Please enter a valid email address."
+        },
+        phone: {
+            validate: value => /^[0-9+\s()-]+$/.test(value),
+            message: "Phone Number must contain only numbers or valid symbols."
+        }
+    };
+
+    document.querySelectorAll(".edit-icon").forEach(function (icon) {
+        icon.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            if (currentEdit) {
+                if (!saveEdit(currentEdit)) {
+                    return; // Don't allow new edit if current one is invalid
+                }
+            }
+
+            const field = icon.getAttribute("data-target");
+            const parent = icon.closest(".detail-info");
+            const valueDiv = parent.querySelector(".detail-value");
+            const currentValue = valueDiv.textContent.trim();
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = currentValue;
+            input.style.width = "100%";
+            input.classList.add("edit-input");
+            input.setAttribute("data-field", field);
+
+            valueDiv.replaceWith(input);
+            currentEdit = { input, parent, icon };
+
+            icon.style.float = "right";
+            input.focus();
+        });
+    });
+
+    document.addEventListener("click", function (e) {
+        if (currentEdit) {
+            const { input, parent } = currentEdit;
+            if (!parent.contains(e.target)) {
+                saveEdit(currentEdit);
+            }
+        }
+    });
+
+    function saveEdit({ input, parent, icon }) {
+        const newValue = input.value.trim();
+        const field = input.getAttribute("data-field");
+
+        const rule = validationRules[field];
+        const oldError = parent.querySelector(".error-msg");
+        if (oldError) oldError.remove();
+
+        if (!newValue || !rule.validate(newValue)) {
+            const error = document.createElement("div");
+            error.classList.add("error-msg");
+            error.style.color = "red";
+            error.style.fontSize = "12px";
+            error.textContent = rule.message;
+            parent.appendChild(error);
+            input.focus();
+            return false; // Prevent saving
+        }
+
+        const valueDiv = document.createElement("div");
+        valueDiv.classList.add("detail-value");
+        valueDiv.textContent = newValue;
+        input.replaceWith(valueDiv);
+
+        icon.style.float = "right";
+        currentEdit = null;
+        return true; // Successfully saved
+    }
+});
+
+
+
+
+
+ const BUName = "BU"; // your variable here
+  document.getElementById('bu-name').textContent = BUName;
+
+  const DeleteMyDeta = "Delete My Data"; // your variable here
+  document.getElementById('delete-my-data').textContent = DeleteMyDeta;
+
+   const DoNotProfile = "Don't Profile"; // your variable here
+  document.getElementById('do-not-profile').textContent = DoNotProfile;
+
+   const DoNotmarket = "Don't Market"; // your variable here
+  document.getElementById('do-not-markeet').textContent = DoNotmarket;
+
+   const DoNotTrack = "Don't Track"; // your variable here
+  document.getElementById('do-not-track').textContent = DoNotTrack;
+
+     const DoNotProcess = "Don't process"; // your variable here
+  document.getElementById('do-not-process').textContent = DoNotProcess;
+
+
+
+let savedFrequencies = []; // array to hold saved values
+
+function openAdvancedSettings() {
+  document.getElementById("frequencyModal").style.display = "block";
+
+  // Apply previously saved selections
+  document.querySelectorAll('input[name="frequency"]').forEach(input => {
+    input.checked = savedFrequencies.includes(input.value);
+  });
+}
+
+function saveFrequencySettings() {
+  const selected = Array.from(document.querySelectorAll('input[name="frequency"]:checked'))
+                        .map(el => el.value);
+
+  if (selected.length > 0) {
+    savedFrequencies = selected;
+    console.log(" Saved:", savedFrequencies);
+    showSaveIndicator(` Preferences saved: ${savedFrequencies.join(', ')}`);
+    closeFrequencyModalAD();
+  } else {
+    alert("⚠️ Please select at least one option before saving.");
+  }
+}
+
+function closeFrequencyModalAD() {
+  // Restore saved values only
+  document.querySelectorAll('input[name="frequency"]').forEach(input => {
+    input.checked = savedFrequencies.includes(input.value);
+  });
+
+  document.getElementById("frequencyModal").style.display = "none";
+}
+
+
+//Show more button
+document.querySelectorAll('.subscription-description').forEach(desc => {
+    const originalText = desc.textContent.trim();
+
+    // Clone element to measure full height
+    const clone = desc.cloneNode(true);
+    clone.style.visibility = 'hidden';
+    clone.style.position = 'absolute';
+    clone.style.height = 'auto';
+    clone.style.maxHeight = 'none';
+    clone.style.webkitLineClamp = 'unset';
+    clone.style.display = 'block';
+    clone.style.overflow = 'visible';
+    clone.classList.add('expanded'); // assumes 'expanded' removes clamping
+    document.body.appendChild(clone);
+
+    const isOverflowing = clone.scrollHeight > desc.offsetHeight;
+    clone.remove();
+
+    if (isOverflowing) {
+        const btn = document.createElement('button');
+        btn.className = 'show-more-btn';
+        btn.textContent = 'Show more';
+        let expanded = false;
+          btn.style.display = 'block';
+        btn.style.marginLeft = '-16px';
+        btn.style.textAlign = 'left';
+
+        btn.addEventListener('click', () => {
+            expanded = !expanded;
+            desc.classList.toggle('expanded');
+            btn.textContent = expanded ? 'Show less' : 'Show more';
+        });
+
+        desc.after(btn);
+    }
+});
+
+
+
+
+</script>
+
+
+
+</body>
+</html>
